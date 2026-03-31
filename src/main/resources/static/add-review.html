@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Review - IT Consultancy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <a href="index.html" class="btn btn-outline-secondary mb-4">
+                <i class="fas fa-arrow-left me-2"></i> Back to Home
+            </a>
+
+            <div class="card shadow-lg border-0" style="border-radius: 15px;">
+                <div class="card-header bg-success text-white p-4" style="border-radius: 15px 15px 0 0;">
+                    <h4 class="mb-0 fw-bold"><i class="fas fa-star text-warning me-2"></i> Submit Your Review</h4>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-muted mb-4">Share your experience with us. Note: Your review will be published on our website once approved by our admin team.</p>
+
+                    <form id="reviewSubmitForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Your Name</label>
+                            <input type="text" class="form-control form-control-lg bg-light" id="clientName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Company / Role</label>
+                            <input type="text" class="form-control form-control-lg bg-light" id="clientRole" placeholder="e.g. CEO at Tech Corp" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Your Review</label>
+                            <textarea class="form-control form-control-lg bg-light" id="clientMessage" rows="5" placeholder="Tell us how our IT services helped your business..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold shadow-sm">
+                            Submit for Approval <i class="fas fa-paper-plane ms-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('reviewSubmitForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Page reload avvakunda aputhundi
+
+        // Form loni data theesukuntundhi
+        const reviewData = {
+            clientName: document.getElementById('clientName').value,
+            clientRole: document.getElementById('clientRole').value,
+            clientMessage: document.getElementById('clientMessage').value
+        };
+
+        // Spring Boot API ki data pamputhundhi
+        fetch('http://localhost:8080/api/reviews/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reviewData)
+        })
+        .then(response => {
+            if(response.ok) {
+                alert("Thank you! Your review has been submitted successfully. It will appear on the website shortly.");
+                document.getElementById('reviewSubmitForm').reset(); // Form empty cheyadam
+            } else {
+                alert("There was a problem. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Couldn't connect to the server.");
+        });
+    });
+</script>
+
+</body>
+</html>

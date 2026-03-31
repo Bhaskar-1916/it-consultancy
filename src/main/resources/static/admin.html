@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - IT Consultancy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <h2 class="fw-bold mb-4 text-center">Admin Dashboard</h2>
+
+    <h4 class="mt-5 mb-3 text-primary">Contact Inquiries</h4>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Service</th>
+                        <th>Message</th>
+                    </tr>
+                    </thead>
+                    <tbody id="contactTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="mb-3 text-success">Client Reviews (Pending & Approved)</h4>
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-success">
+                    <tr>
+                        <th>ID</th>
+                        <th>Client Name</th>
+                        <th>Role</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reviewTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchContacts();
+        fetchReviews();
+    });
+
+    // --- CONTACTS LOGIC ---
+    function fetchContacts() {
+        fetch('http://localhost:8080/api/contact/all')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('contactTableBody');
+                tableBody.innerHTML = '';
+                if(data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No contacts found.</td></tr>';
+                    return;
+                }
+                data.forEach(contact => {
+                    const row = `<tr>
+                        <td>${contact.id}</td>
+                        <td class="fw-bold">${contact.name}</td>
+                        <td>${contact.email}</td>
+                        <td>${contact.phone}</td>
+                        <td><span class="badge bg-primary">${contact.service}</span></td>
+                        <td>${contact.message}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error fetching contacts:', error));
+    }
+
+    // --- REVIEWS LOGIC ---
+    function fetchReviews() {
+        fetch('http://localhost:8080/api/reviews/all')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('reviewTableBody');
+                tableBody.innerHTML = '';
+
+                if(data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No reviews found.</td></tr>';
+                    return;
+                }
+
+                data.forEach(review => {
+                    // Status batti color badge
+                    let statusBadge = review.status === 'APPROVED' ?
+                        '<span class="badge bg-success">APPROVED</span>' :
+                        '<span class="badge bg-warning text-dark">PENDING</span>';
+
+                    // Approve / Reject buttons
+                    let actionButtons = '';
+                    if(review.status === 'PENDING') {
+                        actionButtons = `
+                            <button class="btn btn-sm btn-success me-1" onclick="approveReview(${review.id})">Approve</button>
+                            <button class="btn btn-sm btn-danger" onclick="rejectReview(${review.id})">Reject</button>
+                        `;
+                    } else {
+                        actionButtons = `<button class="btn btn-sm btn-danger" onclick="rejectReview(${review.id})">Delete</button>`;
+                    }
+
+                    const row = `<tr>
+                        <td>${review.id}</td>
+                        <td class="fw-bold">${review.clientName}</td>
+                        <td>${review.clientRole}</td>
+                        <td>${review.clientMessage}</td>
+                        <td>${statusBadge}</td>
+                        <td>${actionButtons}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            })
+            .catch(error => console.error('Error fetching reviews:', error));
+    }
+
+    // Review Approve function
+    function approveReview(id) {
+        if(confirm("Are you sure you want to approve this review?")) {
+            fetch(`http://localhost:8080/api/reviews/${id}/approve`, { method: 'PUT' })
+                .then(response => {
+                    if(response.ok) {
+                        alert("Review Approved! Now this appears on the website.");
+                        fetchReviews(); // Table ni update cheyadaniki
+                    }
+                });
+        }
+    }
+
+    // Review Delete/Reject function
+    function rejectReview(id) {
+        if(confirm("Are you sure you want to delete this review?")) {
+            fetch(`http://localhost:8080/api/reviews/${id}/reject`, { method: 'DELETE' })
+                .then(response => {
+                    if(response.ok) {
+                        alert("Review Deleted!");
+                        fetchReviews(); // Table ni update cheyadaniki
+                    }
+                });
+        }
+    }
+</script>
+
+</body>
+</html>
