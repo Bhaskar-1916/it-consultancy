@@ -16,11 +16,10 @@
     </div>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Backend nunchi kevalam "APPROVED" unna reviews thechukovadam
-        fetch('http://localhost:8080/api/reviews/approved')
+        // Ikkada localhost theesesi, direct ga relative path icham
+        fetch('/api/reviews/approved')
             .then(response => response.json())
             .then(data => {
                 const container = document.getElementById('allReviewsContainer');
@@ -52,10 +51,11 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('allReviewsContainer').innerHTML = '<p class="text-center text-danger">Reviews load avvadam ledu.</p>';
+                document.getElementById('allReviewsContainer').innerHTML = '<p class="text-center text-danger">Reviews load avvadam ledu. Please check backend connection.</p>';
             });
     });
 </script>
+
 
 </body>
 </html>

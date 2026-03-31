@@ -353,8 +353,8 @@
             message: document.getElementById('message').value
         };
 
-        // Fetch API vadi Spring Boot server ki pamputhudhi
-        fetch('http://localhost:8080/api/contact/save', {
+        // Ikkade manam change chesam - localhost theesesam
+        fetch('/api/contact/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -371,9 +371,10 @@
         })
         .catch(error => {
             console.error('Error:', error);
-            alert("Could not connect to the server. Please check if the backend is running.");
+            alert("Could not connect to the server. Please try again later.");
         });
     });
 </script>
+
 </body>
 </html>

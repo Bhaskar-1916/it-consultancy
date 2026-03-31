@@ -58,8 +58,8 @@
             clientMessage: document.getElementById('clientMessage').value
         };
 
-        // Spring Boot API ki data pamputhundhi
-        fetch('http://localhost:8080/api/reviews/save', {
+        // Ikkada localhost theesesi, direct ga relative path icham
+        fetch('/api/reviews/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
