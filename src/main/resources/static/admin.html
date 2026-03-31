@@ -65,7 +65,8 @@
 
     // --- CONTACTS LOGIC ---
     function fetchContacts() {
-        fetch('http://localhost:8080/api/contact/all')
+        // Ikkada localhost theesesam
+        fetch('/api/contact/all')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('contactTableBody');
@@ -91,7 +92,8 @@
 
     // --- REVIEWS LOGIC ---
     function fetchReviews() {
-        fetch('http://localhost:8080/api/reviews/all')
+        // Ikkada localhost theesesam
+        fetch('/api/reviews/all')
             .then(response => response.json())
             .then(data => {
                 const tableBody = document.getElementById('reviewTableBody');
@@ -136,7 +138,8 @@
     // Review Approve function
     function approveReview(id) {
         if(confirm("Are you sure you want to approve this review?")) {
-            fetch(`http://localhost:8080/api/reviews/${id}/approve`, { method: 'PUT' })
+            // Ikkada kooda localhost theesesam
+            fetch(`/api/reviews/${id}/approve`, { method: 'PUT' })
                 .then(response => {
                     if(response.ok) {
                         alert("Review Approved! Now this appears on the website.");
@@ -149,7 +152,8 @@
     // Review Delete/Reject function
     function rejectReview(id) {
         if(confirm("Are you sure you want to delete this review?")) {
-            fetch(`http://localhost:8080/api/reviews/${id}/reject`, { method: 'DELETE' })
+            // Ikkada kooda localhost theesesam
+            fetch(`/api/reviews/${id}/reject`, { method: 'DELETE' })
                 .then(response => {
                     if(response.ok) {
                         alert("Review Deleted!");
