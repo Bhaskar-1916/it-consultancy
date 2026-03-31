@@ -114,39 +114,42 @@ section { padding: 80px 0; }
     transition: transform 0.3s ease;
 }
 
-/* Mobile Menu Professional Styling */
+/* Mobile Menu Professional Styling - Fixed Alignment */
 @media (max-width: 991px) {
     #navbarNav {
-        background-color: #212529; /* Navbar dark theme tho match avvadaniki */
-        border-top: 1px solid #343a40; /* Icon ki menu ki madhya oka chinna line */
+        background-color: #212529;
+        border-top: 1px solid #343a40;
         padding-top: 10px;
         padding-bottom: 15px;
         margin-top: 8px;
     }
 
     .navbar-nav {
-        text-align: right; /* Text antha exact ga right side (icon kinda) ki shift avvadaniki */
-        padding-right: 10px;
+        /* Text motham exact ga right align avvadaniki */
+        text-align: right;
+        /* Ekkuva padding lekunda anni options oke margin tho undadaniki */
+        padding-right: 0 !important;
+        margin-right: 15px;
     }
 
     .navbar-nav .nav-item {
-        border-bottom: 1px solid #343a40; /* Prathi option ki madhya oka separating line */
-        margin-bottom: 5px;
+        border-bottom: 1px solid #343a40;
     }
 
     .navbar-nav .nav-item:last-child {
-        border-bottom: none; /* Last option ki line theeseyadaniki */
+        border-bottom: none;
     }
 
     .navbar-nav .nav-link {
-        padding: 12px 15px;
+        /* Ikkada padding adjust chesam kabatti anni oka straight line lo vasthayi */
+        padding: 12px 0;
         font-size: 16px;
         letter-spacing: 0.5px;
-        color: #f8f9fa !important; /* Text bright ga kanipinchadaniki */
+        color: #f8f9fa !important;
         transition: 0.3s ease;
     }
 
     .navbar-nav .nav-link:hover {
-        color: #0d6efd !important; /* Touch chesinappudu blue color ki maradaniki */
+        color: #0d6efd !important;
     }
 }
