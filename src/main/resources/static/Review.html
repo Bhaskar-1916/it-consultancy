@@ -26,7 +26,7 @@
                 container.innerHTML = ''; // "Loading..." text ni theeseyadaniki
 
                 if(data.length === 0) {
-                    container.innerHTML = '<p class="text-center text-muted">Inka reviews emi levu. Be the first to review!</p>';
+                    container.innerHTML = '<p class="text-center text-muted">There are no reviews. Be the first to review!</p>';
                     return;
                 }
 
@@ -51,7 +51,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('allReviewsContainer').innerHTML = '<p class="text-center text-danger">Reviews load avvadam ledu. Please check backend connection.</p>';
+                document.getElementById('allReviewsContainer').innerHTML = '<p class="text-center text-danger">Reviews are not loading. Please check backend connection.</p>';
             });
     });
 </script>
